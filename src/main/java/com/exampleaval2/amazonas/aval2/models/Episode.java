@@ -1,6 +1,13 @@
 package com.exampleaval2.amazonas.aval2.models;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,47 +20,122 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
 @Entity
-@Table(name = "episode")
+@Table(name = "episodes")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Episode {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     private String name;
-
-    @Column(name = "air_date")
+    @JsonProperty("air_date")
     private String airDate;
-
-    private String url;
-
+    private String episode;
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime created;
+    private String source;
+    @JsonIgnore
+    private List<String> characters;
+    private String url;
+   
 
-    private EpisodeSource source;
 
-    public enum EpisodeSource {
-        API,
-        DATABASE
+    
+    public Episode() {
     }
 
-    public Integer getId() {
+
+
+    public Episode(int id, String name, String airDate, String episode, LocalDateTime created, String source,
+            List<String> characters, String url) {
+        this.id = id;
+        this.name = name;
+        this.airDate = airDate;
+        this.episode = episode;
+        this.created = created;
+        this.source = source;
+        this.characters = characters;
+        this.url = url;
+    }
+
+
+
+
+
+
+
+
+
+    public List<String> getCharacters() {
+        return characters;
+    }
+
+
+
+
+
+
+
+
+
+    public void setCharacters(List<String> characters) {
+        this.characters = characters;
+    }
+
+
+
+
+
+
+
+
+
+    public String getUrl() {
+        return url;
+    }
+
+
+
+
+
+
+
+
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+
+
+
+
+
+
+
+
+    public int getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
-
     public String getName() {
         return name;
     }
     public void setName(String name) {
         this.name = name;
     }
-    
-    public String getUrl() {
-        return url;
+    public String getAirDate() {
+        return airDate;
     }
-    public void setUrl(String url) {
-        this.url = url;
+    public void setAirDate(String airDate) {
+        this.airDate = airDate;
+    }
+    public String getEpisode() {
+        return episode;
+    }
+    public void setEpisode(String episode) {
+        this.episode = episode;
     }
     public LocalDateTime getCreated() {
         return created;
@@ -61,25 +143,15 @@ public class Episode {
     public void setCreated(LocalDateTime created) {
         this.created = created;
     }
-    // public String getSource() {
-    //     return source;
-    // }
-    // public void setSource(String source) {
-    //     this.source = source;
-    // }
-    public EpisodeSource getSource() {
+    public String getSource() {
         return source;
     }
-    public void setSource(EpisodeSource source) {
+    public void setSource(String source) {
         this.source = source;
     }
 
-    public String getAirDate() {
-        return airDate;
-    }
-    public void setAirDate(String airDate) {
-        this.airDate = airDate;
-    }
 
+
+  
   
 }

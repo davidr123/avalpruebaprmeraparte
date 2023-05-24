@@ -9,11 +9,14 @@ import org.springframework.data.repository.query.Param;
 
 import com.exampleaval2.amazonas.aval2.models.Episode;
 
+import jakarta.transaction.Transactional;
+
 public interface  EpisodeRepository extends JpaRepository<Episode, Integer>  {
     
    
     // @Query(value = "SELECT * FROM episode WHERE episode_number = :number", nativeQuery = true)
-      Episode findById(int id);
-
+    Episode findById(int id);
     void deleteByCreatedBefore(LocalDateTime dateTime);
+    // void deleteByAirDateBefore(LocalDateTime dateTime);
+
 }
