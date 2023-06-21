@@ -1,6 +1,7 @@
 package com.exampleaval2.amazonas.aval2.models;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,6 +18,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -36,17 +39,18 @@ public class Episode {
     @JsonIgnore
     private List<String> characters;
     private String url;
-   
+    @Column(name = "consultation_count")
+    private int consultationCount;
 
-
+    @OneToMany(mappedBy = "episode", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EpisodeHistory> episodeHistoryList = new ArrayList<>();
     
     public Episode() {
     }
 
 
-
     public Episode(int id, String name, String airDate, String episode, LocalDateTime created, String source,
-            List<String> characters, String url) {
+            List<String> characters, String url, int consultationCount, List<EpisodeHistory> episodeHistoryList) {
         this.id = id;
         this.name = name;
         this.airDate = airDate;
@@ -55,14 +59,13 @@ public class Episode {
         this.source = source;
         this.characters = characters;
         this.url = url;
+        this.consultationCount = consultationCount;
+        this.episodeHistoryList = episodeHistoryList;
     }
 
-
-
-
-
-
-
+    public void incrementConsultationCount() {
+        consultationCount++;
+    }
 
 
     public List<String> getCharacters() {
@@ -70,23 +73,9 @@ public class Episode {
     }
 
 
-
-
-
-
-
-
-
     public void setCharacters(List<String> characters) {
         this.characters = characters;
     }
-
-
-
-
-
-
-
 
 
     public String getUrl() {
@@ -94,24 +83,9 @@ public class Episode {
     }
 
 
-
-
-
-
-
-
-
     public void setUrl(String url) {
         this.url = url;
     }
-
-
-
-
-
-
-
-
 
     public int getId() {
         return id;
@@ -150,8 +124,21 @@ public class Episode {
         this.source = source;
     }
 
+    public int getConsultationCount() {
+        return consultationCount;
+    }
+
+    public void setConsultationCount(int consultationCount) {
+        this.consultationCount = consultationCount;
+    }
+
+    public List<EpisodeHistory> getEpisodeHistoryList() {
+        return episodeHistoryList;
+    }
 
 
-  
-  
+    public void setEpisodeHistoryList(List<EpisodeHistory> episodeHistoryList) {
+        this.episodeHistoryList = episodeHistoryList;
+    }
+
 }
